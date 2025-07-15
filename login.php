@@ -1,6 +1,5 @@
 <?php
 
-// $controller = 'index';
 require "function.php";
 
 

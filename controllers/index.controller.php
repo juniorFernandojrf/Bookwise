@@ -2,6 +2,6 @@
 
 require('model/dados.php');
 
-$view = "home";
-
-require('view/templates/app.php');
+view('home', [
+    "livros" => $livros
+]);

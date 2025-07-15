@@ -1,24 +1,20 @@
 <?php
 
-// $controller = 'index';
+$requestUri = $_SERVER['REQUEST_URI'];
 
-// dd($_SERVER);
+// Remove query string (ex: ?id=1)
+$requestUri = parse_url($requestUri, PHP_URL_PATH);
 
-if (isset($_SERVER['REQUEST_URI'])) {
+// Remove barra inicial e final
+$controller = trim($requestUri, '/');
 
-    $requestUri = $_SERVER['SCRIPT_NAME'];
-    
-    // 1. Usa basename para pegar apenas o arquivo final
-    $arquivo = basename($requestUri); // retorna "index.php"
-    
-    // 2. Remove a extensão com pathinfo
-    $controller = pathinfo($arquivo, PATHINFO_FILENAME); // retorna "index"
+// Se for vazio, definir como 'index'
+if ($controller === '') {
+    $controller = 'index';
 }
 
 if (! file_exists("controllers/{$controller}.controller.php")) {
-    http_response_code(404);
-    echo "Pagina não encontrada";
-    die();
+    abort(404);
 }
 
 require("controllers/{$controller}.controller.php");

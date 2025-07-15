@@ -18,7 +18,7 @@
                 <li><a href="/meus-livros.php" class="hover:underline">Meus Livros</a></li>
             </ul>
             <ul>
-                <li><a href="/login.php">Fazer Login</a></li>
+                <li><a href="/login">Fazer Login</a></li>
             </ul>
         </nav>
 
