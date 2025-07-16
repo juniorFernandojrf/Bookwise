@@ -1,34 +1,34 @@
 <?php
 
-
 class DB
 {
-    public function Livros()
-    {
-        $dsn = "mysql:host=localhost;dbname=bookwise;charset=utf8mb4";
-        $user = "root";
-        $pass = "";
+    private $db;
 
-        $pdo = new PDO($dsn, $user, $pass);
-        $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    public function __construct()
+    {
+        $this->db = new PDO("mysql:host=localhost;dbname=bookwise;charset=utf8mb4", "root", "");
+    }
+
+    public function livros()
+    {
+        $pdo = $this->db;
 
         $stmt = $pdo->query("SELECT * FROM livros");
 
         $itens = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $returno = [];
+        return array_map( fn($item) => Livro::make($item), $itens);
 
-        foreach ($itens as $item) {
-            $livro = new Livro();
-            $livro->id        = $item['id'];
-            $livro->titulo    = $item['titulo'];
-            $livro->descricao = $item['descrcao'];
-            $livro->autor     = $item['autor'];
-            $livro->ano       = 2023;
+    }
 
-            $returno[] = $livro;
-        }
+    public function livro($id)
+    {
+        $pdo = $this->db;
+
+        $stmt = $pdo->query("SELECT * FROM livros WHERE id = $id");
+
+        $itens = $stmt->fetchAll(PDO::FETCH_ASSOC);
         
-        return $returno;
+        return array_map( fn($item) => Livro::make($item), $itens)[0];
     }
 }

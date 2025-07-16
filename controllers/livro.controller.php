@@ -1,13 +1,11 @@
 <?php
 
-require('model/dados.php');
-
 $id = $_REQUEST['id'];
 
-$id        = $_REQUEST['id'];
-$filtrados = array_filter($livros, fn($l)=> $l['id'] == $id);
-$livros    = array_pop($filtrados);
+$db = new DB();
+
+$livro = $db->livro($id);
 
 view('livro', [
-    "livros" => $livros
+    "livro" => $livro
 ]);
