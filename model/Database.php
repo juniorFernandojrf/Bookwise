@@ -9,26 +9,24 @@ class DB
         $this->db = new PDO("mysql:host=localhost;dbname=bookwise;charset=utf8mb4", "root", "");
     }
 
-    public function livros()
+    public function livros($pesquisa = '')
     {
-        $pdo = $this->db;
+        $prepare = $this->db->prepare("SELECT * FROM livros WHERE titulo like :pesquisa");
+        $prepare->bindValue('pesquisa', "%pesquisa%");
+        $prepare->setFetchMode(PDO::FETCH_CLASS, livro::class);
+        $prepare->execute();
 
-        $stmt = $pdo->query("SELECT * FROM livros");
-
-        $itens = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-        return array_map( fn($item) => Livro::make($item), $itens);
+       return $prepare->fetchAll();
 
     }
 
     public function livro($id)
     {
-        $pdo = $this->db;
+        $prepare = $this->db->prepare("SELECT * FROM livros WHERE id = $id");
+        $prepare->bindValue('id', $id);
+        $prepare->setFetchMode(PDO::FETCH_CLASS, livro::class);
+        $prepare->execute();
 
-        $stmt = $pdo->query("SELECT * FROM livros WHERE id = $id");
-
-        $itens = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        
-        return array_map( fn($item) => Livro::make($item), $itens)[0];
+       return $prepare->fetch();
     }
 }
