@@ -1,11 +1,16 @@
 <?php
+$id = $_GET['id'] ?? null;
 
-$id = $_REQUEST['id'];
+if ($id) {
+    $livro = $database->query(
+        "SELECT * FROM livros WHERE id = :id",
+        Livro::class,
+        ['id' => $id]
+    )->fetch();
 
-$db = new DB();
-
-$livro = $db->livro($id);
-
-view('livro', [
-    "livro" => $livro
-]);
+    view('livro', [
+        "livro" => $livro
+    ]);
+} else {
+    abort(404);
+}

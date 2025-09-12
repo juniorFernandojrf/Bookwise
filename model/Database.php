@@ -4,29 +4,43 @@ class DB
 {
     private $db;
 
-    public function __construct()
+    public function __construct($config)
     {
-        $this->db = new PDO("mysql:host=localhost;dbname=bookwise;charset=utf8mb4", "root", "");
+        $dsn = $this->getDns($config);
+        $user = $config['user'] ?? '';
+        $password = $config['password'] ?? '';
+        $this->db = new PDO($dsn, $user, $password);
     }
 
-    public function livros($pesquisa = '')
+    private function getDns($config)
     {
-        $prepare = $this->db->prepare("SELECT * FROM livros WHERE titulo like :pesquisa");
-        $prepare->bindValue('pesquisa', "%pesquisa%");
-        $prepare->setFetchMode(PDO::FETCH_CLASS, livro::class);
-        $prepare->execute();
+        $driver = $config['driver'];
 
-       return $prepare->fetchAll();
+        if ($driver == 'sqlite') {
+            return $driver . ':' . $config['database'];
+        }
 
+        if ($driver == 'mysql') {
+            return "{$driver}:host={$config['host']};dbname={$config['dbname']};charset={$config['charset']}";
+        }
+
+        return '';
     }
+    // ...existing code...
 
-    public function livro($id)
+    public function query($query, $class = null, $param = [])
     {
-        $prepare = $this->db->prepare("SELECT * FROM livros WHERE id = $id");
-        $prepare->bindValue('id', $id);
-        $prepare->setFetchMode(PDO::FETCH_CLASS, livro::class);
-        $prepare->execute();
 
-       return $prepare->fetch();
+        $prepare = $this->db->prepare($query);
+
+        if ($class) {
+            $prepare->setFetchMode(PDO::FETCH_CLASS, $class);
+        }
+
+        $prepare->execute($param);
+
+        return $prepare;
     }
 }
+
+$database = new DB($config['database']);

@@ -1,9 +1,11 @@
 <?php
+$pesquisa = $_REQUEST['pesquisar'] ?? '';
 
-// require "model/Database.php";
-
-$db     = new DB();
-$livros = $db->livros();
+$livros = $database->query(
+    "SELECT * FROM livros WHERE titulo like :filtro",
+    Livro::class,
+    ['filtro' => "%$pesquisa%"]
+)->fetchAll();
 
 view('home', [
     "livros" => $livros
