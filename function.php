@@ -9,11 +9,16 @@ function view($view, $data = [])
     require('view/templates/app.php');
 }
 
-function dd(...$dump)
+function dump(...$dump)
 {
     echo "<pre>";
     var_dump($dump);
     echo "</pre>";
+}
+
+function dd(...$dump)
+{
+    dump();
     die();
 }
 

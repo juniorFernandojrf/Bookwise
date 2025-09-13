@@ -1,7 +1,7 @@
 <div class="mt-6 grid grid-cols-2 gap-2">
     <div class="border border-stone-700 rounded">
         <h1 class="border-b border-stone-700 text-stone-400 font-bold px-4 py-2">Login</h1>
-        <form action="" class="px-4 space-y-4">
+        <form action="/registrar" method="POST" class="px-4 space-y-4">
             <div class="flex flex-col">
                 <label class="text-stone-400">Email</label>
                 <input
@@ -30,7 +30,7 @@
             <div class="flex flex-col">
                 <label class="text-stone-400">Nome</label>
                 <input
-                    type="email"
+                    type="text"
                     name="nome" required
                     class="border-stone-800 border-2 rounded-md bg-stone-900 text-sm focus:outline-none px-2 py-1">
             </div>
@@ -51,8 +51,8 @@
             <div class="flex flex-col">
                 <label class="text-stone-400 mb-1">Senha</label>
                 <input
-                    type="senha"
-                    name="email" required
+                    type="password"
+                    name="senha" required
                     class="border-stone-800 border-2 rounded-md bg-stone-900 text-sm focus:outline-none px-2 py-1 ">
             </div>
 
